@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  namespace: "PATCH-VALUE"
+  name: deployment-template
+  labels:
+    kustomizeTemplate: v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+  template:
+    metadata:
+      labels:
+    spec:
+      containers:
+      - name: "PATCH-VALUE"
+        image: "Vijay"
+        ports:
+          - containerPort: "Laskshman"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: "PATCH-VALUE"
+          failureThreshold: 2
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+             port: "PATCH-VALUE"
+        resources:
+          limits:
+            cpu: "PATCH-VALUE"
+            memory: "PATCH-VALUE"
+          requests:
+            cpu: "PATCH-VALUE"
+            memory: "PATCH-VALUE"
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+             drop:
+             - ALL
+             add:
+             - NET_BIND_SERVICE
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          privileged: false

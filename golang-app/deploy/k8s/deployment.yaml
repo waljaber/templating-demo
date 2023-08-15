@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  namespace: golang-application
+  name: golang-demo-app
+  labels:
+    app: golang-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: golang-demo
+  template:
+    metadata:
+      labels:
+        app: golang-demo
+    spec:
+      containers:
+      - name: golang-demo
+        image: c8n.io/waljaber/golang-app:uat-v1
+        ports:
+          - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          failureThreshold: 2
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+             port: 8080
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 256Mi

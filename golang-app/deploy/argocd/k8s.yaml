@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: golang
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: golang-application
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: golang-app/deploy/k8s
+    repoURL: 'https://github.com/waljaber/templating-demo.git'
+    targetRevision: HEAD
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions: []

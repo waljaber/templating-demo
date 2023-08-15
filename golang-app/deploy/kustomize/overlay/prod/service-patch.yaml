@@ -1,0 +1,19 @@
+- op: replace
+  path: /metadata/name
+  value: golang-app-service
+
+- op: add
+  path: /metadata/labels/svc
+  value: golang-prod
+
+- op: replace
+  path: /spec/ports/0/name
+  value: golang-http
+
+- op: replace
+  path: /spec/ports/0/port
+  value: 8080
+
+- op: replace
+  path: /spec/ports/0/targetPort
+  value: 8080

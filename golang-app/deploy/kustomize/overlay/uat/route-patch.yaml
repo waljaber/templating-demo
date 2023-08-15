@@ -1,0 +1,13 @@
+# Route Name, and label
+- op: replace
+  path: /metadata/name
+  value: golang-app-route
+
+# Service port config
+- op: replace
+  path: /spec/port/targetPort
+  value: golang-http
+
+- op: replace
+  path: /spec/to/name
+  value: golang-app-service

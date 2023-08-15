@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  namespace: simple-service
+  name: nodejs-demo-app
+  labels:
+    app: nodejs-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejs-demo
+  template:
+    metadata:
+      labels:
+        app: nodejs-demo
+    spec:
+      containers:
+      - name: nodejs-demo
+        image: c8n.io/waljaber/nodejs-app:uat-v1
+        ports:
+        - containerPort: 3000
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          failureThreshold: 2
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 3000
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 80m
+            memory: 128Mi

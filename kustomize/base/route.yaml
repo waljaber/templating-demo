@@ -1,0 +1,17 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+  labels:
+  name: route-template
+  namespace: "PATCH-VALUE"
+spec:
+  host:
+  port:
+    targetPort: "PATCH-VALUE"
+  to:
+    kind: Service
+    name: "PATCH-VALUE"
+    weight: 100
+  wildcardPolicy: None
