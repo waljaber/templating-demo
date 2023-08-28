@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  namespace: {{.Values.appConfig.namespaceName}}
+  name: {{.Values.appConfig.name}}
+  labels:
+    app: {{.Values.appConfig.label}}
+    helmTemplate: v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{.Values.appConfig.label}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.appConfig.label}}
+    spec:
+      containers:
+      - name: {{ .Values.appConfig.deployment.containerName}}
+        ports:
+          - containerPort: {{ .Values.appConfig.deployment.containerPort}}
+        image: {{.Values.appConfig.deployment.registryName}}/{{.Values.appConfig.deployment.repoName}}/{{.Values.appConfig.deployment.imageName}}:{{.Values.appConfig.deployment.tagName}}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.appConfig.deployment.containerPort}}
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+             port: {{ .Values.appConfig.deployment.containerPort}}
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+             drop:
+             - ALL
+             add:
+             - NET_BIND_SERVICE
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          privileged: false
+        resources:
+          requests:
+            cpu: {{ .Values.appConfig.deployment.resources.requests.cpu}}
+            memory: {{ .Values.appConfig.deployment.resources.requests.memory}}
+          limits:
+            cpu: {{ .Values.appConfig.deployment.resources.limits.cpu}}
+            memory: {{ .Values.appConfig.deployment.resources.limits.memory}}
