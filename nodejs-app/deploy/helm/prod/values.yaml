@@ -1,0 +1,21 @@
+applicationTemplate:
+  appConfig:
+    namespaceName: nodejs-application-prod
+    label: nodejs-app
+    name: nodejs-project
+    deployment:
+      containerName: nodejs-container
+      registryName: c8n.io
+      repoName: waljaber
+      imageName: nodejs-app
+      tagName: prod-v1
+      containerPort: 3000
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 200m
+          memory: 256Mi
+    service:
+      portName: nodejs-port
