@@ -1,0 +1,9 @@
+apiVersion: v2
+name: nodejs-subchart-uat
+type: application
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+  - name: applicationTemplate
+    version: 0.1.2
+    repository: "http://helm-repo.example.com/app-template"
